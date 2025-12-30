@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "name": "Returns error without token",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 401,
+      "expectedBody": {
+        "error": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

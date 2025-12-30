@@ -6,6 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import { Progress } from '@/components/ui/progress';
 import { Switch } from '@/components/ui/switch';
+import StarField from '@/components/StarField';
+import AISecurityMonitor from '@/components/AISecurityMonitor';
 
 type Role = 'owner' | 'admin' | 'manager' | 'accountant' | 'user';
 
@@ -20,6 +22,7 @@ interface Module {
 
 const Index = () => {
   const [currentRole, setCurrentRole] = useState<Role>('owner');
+  const [showAISecurity, setShowAISecurity] = useState(false);
   const [modules, setModules] = useState<Module[]>([
     { id: '1', name: 'Dashboard Analytics', icon: 'BarChart3', isPremium: true, isActive: true, allowedRoles: ['owner', 'admin'] },
     { id: '2', name: 'User Management', icon: 'Users', isPremium: false, isActive: true, allowedRoles: ['owner', 'admin', 'manager'] },
@@ -60,10 +63,10 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1A1F2C] via-[#2d1f3d] to-[#1A1F2C] text-white overflow-hidden relative">
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiM5Yjg3ZjUiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtMy4zMTQgMi42ODYtNiA2LTZzNiAyLjY4NiA2IDYtMi42ODYgNi02IDYtNi0yLjY4Ni02LTZ6TTEyIDUwYzAtMy4zMTQgMi42ODYtNiA2LTZzNiAyLjY4NiA2IDYtMi42ODYgNi02IDYtNi0yLjY4Ni02LTZ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30"></div>
+      <StarField modules={modules} onModuleClick={toggleModule} />
       
-      <div className="absolute top-20 left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse-glow"></div>
-      <div className="absolute bottom-20 right-20 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '1s' }}></div>
+      <div className="absolute top-20 left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse-glow pointer-events-none"></div>
+      <div className="absolute bottom-20 right-20 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse-glow pointer-events-none" style={{ animationDelay: '1s' }}></div>
       
       <div className="relative z-10 container mx-auto px-4 py-8">
         <header className="mb-12 text-center">
@@ -291,7 +294,11 @@ const Index = () => {
                     <p className="font-medium">AI мониторинг безопасности</p>
                     <p className="text-sm text-purple-300">Автоматическое обнаружение угроз</p>
                   </div>
-                  <Switch defaultChecked disabled={currentRole !== 'owner'} />
+                  <Switch 
+                    defaultChecked 
+                    disabled={currentRole !== 'owner'}
+                    onCheckedChange={setShowAISecurity}
+                  />
                 </div>
                 <div className="flex items-center justify-between py-3">
                   <div>
@@ -335,6 +342,8 @@ const Index = () => {
           </TabsContent>
         </Tabs>
       </div>
+      
+      <AISecurityMonitor isVisible={showAISecurity} />
     </div>
   );
 };
